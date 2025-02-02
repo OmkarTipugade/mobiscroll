@@ -28,21 +28,20 @@ const ScheduleTable = ({ resources, currentDate }) => {
     }
   };
 
-  const handleDeleteEvent = (resourceIndex, dayIndex, eventIndex) => {
-    const id = `box-${resourceIndex}-${dayIndex}`;
-    const updatedEvents = { ...events };
-    if (updatedEvents[id]) {
-      updatedEvents[id].splice(eventIndex, 1);
-      if (updatedEvents[id].length === 0) {
-        delete updatedEvents[id];
-      }
-      setEvents(updatedEvents);
-    }
-  };
+  // const handleDeleteEvent = (resourceIndex, dayIndex, eventIndex) => {
+  //   const id = `box-${resourceIndex}-${dayIndex}`;
+  //   const updatedEvents = { ...events };
+  //   if (updatedEvents[id]) {
+  //     updatedEvents[id].splice(eventIndex, 1);
+  //     if (updatedEvents[id].length === 0) {
+  //       delete updatedEvents[id];
+  //     }
+  //     setEvents(updatedEvents);
+  //   }
+  // };
 
   const getTextBgColor = (bgColor) => {
     const intensity = parseInt(bgColor.split('-')[2], 10);
-    console.log(intensity);
     return intensity > 400 ? "text-white" : "text-black";
   };
 
@@ -57,7 +56,46 @@ const ScheduleTable = ({ resources, currentDate }) => {
       });
     }
   };
-
+  const handleDrop = (e, targetResourceIndex, targetDayIndex) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData("text/plain");
+    if (!data) return;
+  
+    try {
+      const { sourceResourceIndex, sourceDayIndex, eventIndex } = JSON.parse(data);
+  
+      if (sourceResourceIndex === targetResourceIndex && sourceDayIndex === targetDayIndex) return;
+  
+      setEvents((prevEvents) => {
+        const sourceId = `box-${sourceResourceIndex}-${sourceDayIndex}`;
+        const targetId = `box-${targetResourceIndex}-${targetDayIndex}`;
+        const updatedEvents = { ...prevEvents };
+  
+        // Check if source event exists
+        if (!updatedEvents[sourceId] || !updatedEvents[sourceId][eventIndex]) return prevEvents;
+  
+        // Create new array copies to maintain immutability
+        const sourceEvents = [...updatedEvents[sourceId]];
+        const [movedEvent] = sourceEvents.splice(eventIndex, 1);
+        
+        // Update source events
+        if (sourceEvents.length === 0) {
+          delete updatedEvents[sourceId];
+        } else {
+          updatedEvents[sourceId] = sourceEvents;
+        }
+  
+        // Update target events
+        const targetEvents = updatedEvents[targetId] ? [...updatedEvents[targetId]] : [];
+        targetEvents.push(movedEvent);
+        updatedEvents[targetId] = targetEvents;
+  
+        return updatedEvents;
+      });
+    } catch (error) {
+      console.error("Error handling drop:", error);
+    }
+  };
   return (
     <div className="overflow-x-auto pb-2" tabIndex={0} onKeyDown={handleKeyDown}>
       <table className="border-collapse min-w-max">
@@ -93,6 +131,8 @@ const ScheduleTable = ({ resources, currentDate }) => {
                     key={dayIndex}
                     className="border w-[72px] h-[62px] border-gray-300 bg-white relative"
                     onDoubleClick={() => handleDoubleClick(resourceIndex, dayIndex)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => handleDrop(e, resourceIndex, dayIndex)}
                   >
                     {events[id] &&
                       events[id].map((event, idx) => (
@@ -100,16 +140,21 @@ const ScheduleTable = ({ resources, currentDate }) => {
                           key={idx}
                           className={`m-1 p-1 text-xs rounded ${event.color} relative group ${getTextBgColor(event.color)}`}
                           onMouseEnter={() => setHoveredEvent({ cellId: id, eventIndex: idx })}
-                          onMouseLeave={() => setHoveredEvent(null)
-                          }
-                          onkeydown={()=>{
-                            if(event.key ==='Delete') {
-                              handleDeleteEvent(resourceIndex, dayIndex, idx);
-                            }
+                          onMouseLeave={() => setHoveredEvent(null)}
+                          draggable
+                          onDragStart={(e) => {
+                            e.dataTransfer.setData(
+                              "text/plain",
+                              JSON.stringify({
+                                sourceResourceIndex: resourceIndex,
+                                sourceDayIndex: dayIndex,
+                                eventIndex: idx,
+                              })
+                            );
+                            e.dataTransfer.effectAllowed = "move";
                           }}
                         >
                           {event.name}
-                        
                         </div>
                       ))}
                   </td>
