@@ -31,7 +31,7 @@ const ResourceList = ({ resources, setResources }) => {
         />
         <button
           onClick={handleAddResource}
-          className="ml-2 bg-green-500 text-white p-1.5 text-sm rounded hover:bg-green-400"
+          className="ml-2 bg-green-500 cursor-pointer text-white p-1.5 text-sm rounded hover:bg-green-400"
         >
           Add
         </button>

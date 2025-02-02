@@ -1,12 +1,7 @@
 import React from "react";
 import { format } from "date-fns";
 
-const ScheduleTable = ({
-  resources,
-  currentDate,
-  currentMonth,
-  currentYear,
-}) => {
+const ScheduleTable = ({ resources, currentDate }) => {
   const d = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const daysInMonth = new Date(
     currentDate.getFullYear(),
@@ -21,6 +16,8 @@ const ScheduleTable = ({
       )}`
   );
 
+  const currentMonth = format(currentDate, "MMMM");
+  const currentYear = format(currentDate, "yyyy");
   return (
     <div className="overflow-x-auto pb-2">
       <table className="border-collapse min-w-max">
