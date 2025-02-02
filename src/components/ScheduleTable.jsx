@@ -12,7 +12,7 @@ const ScheduleTable = ({ resources, currentDate }) => {
   const dayStrings = [...Array(daysInMonth)].map((_, i) =>
     `${i + 1} ${format(new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1), "EEE")}`
   );
-
+  
   const currentMonth = format(currentDate, "MMMM");
   const currentYear = format(currentDate, "yyyy");
 
@@ -138,7 +138,7 @@ const ScheduleTable = ({ resources, currentDate }) => {
                       events[id].map((event, idx) => (
                         <div
                           key={idx}
-                          className={`m-1 p-1 text-xs rounded ${event.color} relative group ${getTextBgColor(event.color)}`}
+                          className={`m-1 p-1 text-xs rounded ${event.color} cursor-pointer relative group ${getTextBgColor(event.color)}`}
                           onMouseEnter={() => setHoveredEvent({ cellId: id, eventIndex: idx })}
                           onMouseLeave={() => setHoveredEvent(null)}
                           draggable
