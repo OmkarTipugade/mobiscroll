@@ -48,6 +48,7 @@ const ScheduleTable = ({ resources, currentDate }) => {
             <tr key={resourceIndex}>
               {dayStrings.map((_, dayIndex) => (
                 <td
+                  id={`box-${resourceIndex}-${dayIndex}`}
                   key={dayIndex}
                   className="border w-[72px] h-[62px] border-gray-300 bg-white"
                 ></td>
