@@ -28,6 +28,24 @@ const ScheduleTable = ({ resources, currentDate }) => {
     }
   };
 
+  const handleDeleteEvent = (resourceIndex, dayIndex, eventIndex) => {
+    const id = `box-${resourceIndex}-${dayIndex}`;
+    const updatedEvents = { ...events };
+    if (updatedEvents[id]) {
+      updatedEvents[id].splice(eventIndex, 1);
+      if (updatedEvents[id].length === 0) {
+        delete updatedEvents[id];
+      }
+      setEvents(updatedEvents);
+    }
+  };
+
+  const getTextBgColor = (bgColor) => {
+    const intensity = parseInt(bgColor.split('-')[2], 10);
+    console.log(intensity);
+    return intensity > 400 ? "text-white" : "text-black";
+  };
+
   const handleKeyDown = (event) => {
     if (event.key === "Delete" && hoveredEvent) {
       const { cellId, eventIndex } = hoveredEvent;
@@ -80,11 +98,18 @@ const ScheduleTable = ({ resources, currentDate }) => {
                       events[id].map((event, idx) => (
                         <div
                           key={idx}
-                          className={`m-1 p-1 text-xs rounded ${event.color}`}
+                          className={`m-1 p-1 text-xs rounded ${event.color} relative group ${getTextBgColor(event.color)}`}
                           onMouseEnter={() => setHoveredEvent({ cellId: id, eventIndex: idx })}
-                          onMouseLeave={() => setHoveredEvent(null)}
+                          onMouseLeave={() => setHoveredEvent(null)
+                          }
+                          onkeydown={()=>{
+                            if(event.key ==='Delete') {
+                              handleDeleteEvent(resourceIndex, dayIndex, idx);
+                            }
+                          }}
                         >
                           {event.name}
+                        
                         </div>
                       ))}
                   </td>
