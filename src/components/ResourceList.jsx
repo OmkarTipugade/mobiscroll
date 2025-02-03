@@ -28,6 +28,7 @@ const ResourceList = ({ resources, setResources }) => {
           onChange={(e) => setNewResource(e.target.value)}
           className="border p-1.5 text-sm w-36"
           placeholder="New Resource"
+          onKeyDown={(e) => e.key === "Enter" && handleAddResource()}
         />
         <button
           onClick={handleAddResource}
