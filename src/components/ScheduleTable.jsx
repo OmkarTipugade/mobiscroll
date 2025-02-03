@@ -6,6 +6,64 @@ const ScheduleTable = ({ resources, currentDate }) => {
   const [events, setEvents] = useState({});
   const [hoveredEvent, setHoveredEvent] = useState(null);
   const [showPopupMessage, setShowPopupMessage] = useState(false);
+  const resizable = document.getElementById("resizable");
+  const leftHandle = document.querySelector(".left-handle");
+  const rightHandle = document.querySelector(".right-handle");
+  const [isResizing, setIsResizing] = useState(false);
+  let startX, initialWidth, initialLeft;
+
+  const startResize = (e, handle) =>{
+    e.preventDefault();
+    setIsResizing(true);
+    startX = e.clientX;
+    initialWidth = resizable.offsetWidth;
+    initialLeft = resizable.getBoundingClientRect().left;
+
+    if (handle === leftHandle) {
+      document.addEventListener("mousemove", resizeLeft);
+    } else if (handle === rightHandle) {
+      document.addEventListener("mousemove", resizeRight);
+    }
+    document.addEventListener("mouseup", stopResize);
+  }
+
+  const resizeLeft =(e)=> {
+    if (!isResizing) return;
+    const deltaX = e.clientX - startX;
+    const newWidth = initialWidth - deltaX;
+    const newLeft = initialLeft + deltaX;
+    const containerRect = resizable.parentElement.getBoundingClientRect();
+
+    if (
+      newWidth > 50 &&
+      newLeft > containerRect.left &&
+      newLeft + newWidth < containerRect.right
+    ) {
+      resizable.style.width = `${newWidth}px`;
+      resizable.style.left = `${newLeft - containerRect.left}px`;
+    }
+  }
+
+  const resizeRight=(e)=> {
+    if (!isResizing) return;
+    const deltaX = e.clientX - startX;
+    const newWidth = initialWidth + deltaX;
+    const containerRect = resizable.parentElement.getBoundingClientRect();
+    const currentLeft = resizable.getBoundingClientRect().left;
+
+    if (newWidth > 50 && currentLeft + newWidth < containerRect.right) {
+      resizable.style.width = `${newWidth}px`;
+    }
+  }
+
+  const stopResize =()=> {
+    setIsResizing(false);
+    document.removeEventListener("mousemove", resizeLeft);
+    document.removeEventListener("mousemove", resizeRight);
+    document.removeEventListener("mouseup", stopResize);
+  }
+
+
 
   const d = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const daysInMonth = new Date(
@@ -170,7 +228,6 @@ const ScheduleTable = ({ resources, currentDate }) => {
               </td>
             ))}
           </tr>
-
           {resources.map((_, resourceIndex) => (
             <tr key={resourceIndex}>
               {dayStrings.map((_, dayIndex) => {
@@ -190,9 +247,10 @@ const ScheduleTable = ({ resources, currentDate }) => {
                       events[id].map((event, idx) => (
                         <div
                           key={idx}
-                          className={`m-1 p-1 text-xs rounded ${
+                          id="resizable"
+                          className={`resizable m-1 p-1 text-xs rounded ${
                             event.color
-                          } cursor-pointer relative group ${getTextBgColor(
+                          } cursor-pointer flex justify-between absolute group ${getTextBgColor(
                             event.color
                           )}`}
                           onMouseEnter={() =>
@@ -212,7 +270,13 @@ const ScheduleTable = ({ resources, currentDate }) => {
                             e.dataTransfer.effectAllowed = "move";
                           }}
                         >
-                          {event.name}
+                          <div onMouseDown={(event)=>{
+                            startResize(event, leftHandle);
+                          }} className="handle left-handle cursor-ew-resize h-full absolute w-1 left-0 top-0 opacity-[.3] bg-black select-none transition-opacity-[0.2s] hover:opacity-100"></div>
+                          <div className="content flex-grow px-2 relative z-10">
+                            {event.name}
+                          </div>
+                          <div onMouseDown={(event,rightHandle)} className="handle right-handle cursor-ew-resize h-full absolute w-1 right-0 top-0 opacity-[.3] bg-black select-none transition-opacity-[0.2s] hover:opacity-100"></div>
                         </div>
                       ))}
                   </td>
