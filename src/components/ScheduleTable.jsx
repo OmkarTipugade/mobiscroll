@@ -5,6 +5,7 @@ import colors from "./assets/colors.js";
 const ScheduleTable = ({ resources, currentDate }) => {
   const [events, setEvents] = useState({});
   const [hoveredEvent, setHoveredEvent] = useState(null);
+  const [showPopupMessage, setShowPopupMessage] = useState(false);
 
   const d = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const daysInMonth = new Date(
@@ -58,26 +59,24 @@ const ScheduleTable = ({ resources, currentDate }) => {
     }
   };
 
-  // const handleDeleteEvent = (resourceIndex, dayIndex, eventIndex) => {
-  //   const id = `box-${resourceIndex}-${dayIndex}`;
-  //   const updatedEvents = { ...events };
-  //   if (updatedEvents[id]) {
-  //     updatedEvents[id].splice(eventIndex, 1);
-  //     if (updatedEvents[id].length === 0) {
-  //       delete updatedEvents[id];
-  //     }
-  //     setEvents(updatedEvents);
-  //   }
-  // };
-
   const getTextBgColor = (bgColor) => {
     const intensity = parseInt(bgColor.split("-")[2], 10);
     return intensity > 400 ? "text-white" : "text-black";
   };
 
+  useEffect(() => {
+    if (showPopupMessage) {
+      const timer = setTimeout(() => {
+        setShowPopupMessage(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showPopupMessage]);
+
   const handleKeyDown = (event) => {
     if (event.key === "Delete" && hoveredEvent) {
       const { cellId, eventIndex } = hoveredEvent;
+      setShowPopupMessage(true);
       setEvents((prevEvents) => {
         const updatedEvents = { ...prevEvents };
         updatedEvents[cellId] = updatedEvents[cellId].filter(
@@ -136,12 +135,18 @@ const ScheduleTable = ({ resources, currentDate }) => {
       console.error("Error handling drop:", error);
     }
   };
+
   return (
     <div
       className="overflow-x-auto pb-2"
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
+      {showPopupMessage && (
+        <div className="fixed top-5 right-5 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg transition-opacity duration-500">
+          Event deleted!
+        </div>
+      )}
       <table className="border-collapse min-w-max border-gray-200">
         <tbody>
           <tr>
@@ -165,7 +170,7 @@ const ScheduleTable = ({ resources, currentDate }) => {
               </td>
             ))}
           </tr>
-          
+
           {resources.map((_, resourceIndex) => (
             <tr key={resourceIndex}>
               {dayStrings.map((_, dayIndex) => {
@@ -207,7 +212,7 @@ const ScheduleTable = ({ resources, currentDate }) => {
                             e.dataTransfer.effectAllowed = "move";
                           }}
                         >
-                          <span>{event.name}</span>
+                          {event.name}
                         </div>
                       ))}
                   </td>
@@ -215,7 +220,6 @@ const ScheduleTable = ({ resources, currentDate }) => {
               })}
             </tr>
           ))}
-
         </tbody>
       </table>
     </div>
