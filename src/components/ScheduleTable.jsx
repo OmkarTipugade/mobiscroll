@@ -6,10 +6,12 @@ const ScheduleTable = ({ resources, currentDate }) => {
   const [events, setEvents] = useState({});
   const [hoveredEvent, setHoveredEvent] = useState(null);
   const [showPopupMessage, setShowPopupMessage] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+
+
   const resizable = document.getElementById("resizable");
   const leftHandle = document.querySelector(".left-handle");
   const rightHandle = document.querySelector(".right-handle");
-  const [isResizing, setIsResizing] = useState(false);
   let startX, initialWidth, initialLeft;
 
   const startResize = (e, handle) =>{
@@ -18,7 +20,7 @@ const ScheduleTable = ({ resources, currentDate }) => {
     startX = e.clientX;
     initialWidth = resizable.offsetWidth;
     initialLeft = resizable.getBoundingClientRect().left;
-
+    console.log("initialWidth=" + initialWidth + " initialLeft=" + initialLeft)
     if (handle === leftHandle) {
       document.addEventListener("mousemove", resizeLeft);
     } else if (handle === rightHandle) {
@@ -57,7 +59,7 @@ const ScheduleTable = ({ resources, currentDate }) => {
   }
 
   const stopResize =()=> {
-    setIsResizing(false);
+    // setIsResizing(false);
     document.removeEventListener("mousemove", resizeLeft);
     document.removeEventListener("mousemove", resizeRight);
     document.removeEventListener("mouseup", stopResize);
@@ -245,10 +247,10 @@ const ScheduleTable = ({ resources, currentDate }) => {
                   >
                     {events[id] &&
                       events[id].map((event, idx) => (
-                        <div
+                        <button
                           key={idx}
                           id="resizable"
-                          className={`resizable m-1 p-1 text-xs rounded ${
+                          className={`resizable m-1 p-1 rounded-sm text-xs ${
                             event.color
                           } cursor-pointer flex justify-between relative group ${getTextBgColor(
                             event.color
@@ -270,14 +272,18 @@ const ScheduleTable = ({ resources, currentDate }) => {
                             e.dataTransfer.effectAllowed = "move";
                           }}
                         >
-                          <div onMouseDown={(event)=>{
+                          <button onMouseDown={(event)=>{
+                            console.log('leftHandle clicked');
                             startResize(event, leftHandle);
-                          }} className="handle left-handle cursor-ew-resize h-full absolute w-1 left-0 top-0 opacity-[.3] bg-black select-none transition-opacity-[0.2s] hover:opacity-100"></div>
+                          }} className="handle left-handle cursor-ew-resize h-full absolute w-1 left-0 top-0 opacity-[.3] bg-black select-none transition-opacity-[0.2s] hover:opacity-100"></button>
                           <div className="content flex-grow px-2 relative z-10">
                             {event.name}
                           </div>
-                          <div onMouseDown={(event)=>{startResize(event,rightHandle)}} className="handle right-handle cursor-ew-resize h-full absolute w-1 right-0 top-0 opacity-[.3] bg-black select-none transition-opacity-[0.2s] hover:opacity-100"></div>
-                        </div>
+                          <button onMouseDown={(event)=>{
+                            console.log('rightHandle clicked');
+                            startResize(event,rightHandle);
+                          }} className="handle right-handle cursor-ew-resize h-full absolute w-1 right-0 top-0 opacity-[.3] bg-black select-none transition-opacity-[0.2s] hover:opacity-100"></button>
+                        </button>
                       ))}
                   </td>
                 );
