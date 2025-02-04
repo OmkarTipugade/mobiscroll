@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { format } from "date-fns";
 import colors from "./assets/colors.js";
 import TableBoxRow from "./TableBoxRow.jsx";
-
+import dayArr from "./assets/days.js";
+import TableHeadRow from "./TableHeadRow.jsx";
 const ScheduleTable = ({ resources, currentDate }) => {
   const [events, setEvents] = useState({});
   const [hoveredEvent, setHoveredEvent] = useState(null);
@@ -65,7 +66,6 @@ const ScheduleTable = ({ resources, currentDate }) => {
     document.removeEventListener("mouseup", stopResize);
   };
 
-  const d = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const daysInMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() + 1,
@@ -209,23 +209,13 @@ const ScheduleTable = ({ resources, currentDate }) => {
         <tbody>
           <tr>
             {dayStrings.map((day, index) => (
-              <td
-                key={index}
-                className="border text-sm border-gray-300 w-[72px] h-[26px] text-center"
-              >
-                <span
-                  className={`text-sm flex rounded-full w-[60px] mx-auto items-center justify-center ${
-                    currentDate.getDate() == day.split(" ")[0] &&
-                    d[currentDate.getDay()] == day.split(" ")[1] &&
-                    format(new Date(), "MMMM") == currentMonth &&
-                    format(new Date(), "yyyy") == currentYear
-                      ? "bg-blue-500 text-white"
-                      : ""
-                  }`}
-                >
-                  {day}
-                </span>
-              </td>
+              <TableHeadRow
+                currentDate={currentDate}
+                currentMonth={currentMonth}
+                currentYear={currentYear}
+                day={day}
+                index={index}
+              />
             ))}
           </tr>
           {resources.map((_, resourceIndex) => (
