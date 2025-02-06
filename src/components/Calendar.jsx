@@ -30,13 +30,13 @@ const Calendar = ({
         <div className="flex">
           <button
             onClick={() => handleMonthChange(-1)}
-            className="text-blue-500 text-2xl hover:text-blue-400"
+            className="text-blue-500 text-2xl me-2 hover:text-blue-400"
           >
             <IoIosArrowBack />
           </button>
           <button
             onClick={() => handleMonthChange(1)}
-            className="text-blue-500 text-2xl hover:text-blue-400"
+            className="text-blue-500 text-2xl ms-2 hover:text-blue-400"
           >
             <IoIosArrowForward />
           </button>
