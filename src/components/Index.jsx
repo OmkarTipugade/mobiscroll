@@ -47,19 +47,28 @@ const Index = () => {
         <div className="text-blue-500 flex relative">
           {/* Navigation buttons for previous/next month and resetting to today */}
           <button
-            onClick={() => handleMonthChange(-1)}
+            onClick={() => {
+              handleMonthChange(-1);
+              setShowCalendar(false);
+            }}
             className="text-2xl cursor-pointer mr-3 hover:text-blue-400"
           >
             <IoIosArrowBack />
           </button>
           <button
-            onClick={() => setCurrentDate(new Date())}
+            onClick={() => {
+              setCurrentDate(new Date())
+              setShowCalendar(false);
+            }}
             className="text-sm font-bold cursor-pointer hover:text-blue-400"
           >
             Today
           </button>
           <button
-            onClick={() => handleMonthChange(1)}
+            onClick={() => {
+              handleMonthChange(1);
+              setShowCalendar(false);
+            }}
             className="text-2xl cursor-pointer ml-3 hover:text-blue-400"
           >
             <IoIosArrowForward />
