@@ -14,7 +14,6 @@ const TableBoxRow = ({
   const resizable = document.getElementById("resizable");
   const leftHandle = document.querySelector(".left-handle");
   const rightHandle = document.querySelector(".right-handle");
-  const content = document.querySelector(".content");
   let startX, initialWidth, initialLeft;
 
   const startResize = (e, handle) => {

@@ -14,6 +14,7 @@ const Index = () => {
   );
   const [resources, setResources] = useState(resouces);
 
+  // Function to update the currentDate state when navigating months
   const handleMonthChange = (offset) => {
     setCurrentDate((prev) => {
       const newDate = new Date(prev);
@@ -29,14 +30,9 @@ const Index = () => {
           onClick={() => setShowCalendar(!showCalendar)}
           className="text-xl text-blue-500 cursor-pointer flex hover:text-blue-400"
         >
-          <span>
-            {selectedDate || setSelectedDate || handleMonthChange
-              ? `${format(currentDate, "MMMM")}`
-              : `${format(new Date(), "MMMM")}`}
-          </span>
-          <span className="ml-2">{selectedDate || setSelectedDate || handleMonthChange
-              ? `${format(currentDate, "yyyy")}`
-              : `${format(new Date(), "yyyy")}`}</span>
+          {/* Ensures correct month/year display */}
+          <span>{format(currentDate, "MMMM")}</span>
+          <span className="ml-2">{format(currentDate, "yyyy")}</span>
         </button>
         {showCalendar && (
           <Calendar
@@ -49,6 +45,7 @@ const Index = () => {
           />
         )}
         <div className="text-blue-500 flex relative">
+          {/* Navigation buttons for previous/next month and resetting to today */}
           <button
             onClick={() => handleMonthChange(-1)}
             className="text-2xl cursor-pointer mr-3 hover:text-blue-400"
