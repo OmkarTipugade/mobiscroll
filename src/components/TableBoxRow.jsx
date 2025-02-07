@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import colors from "./assets/colors";
+import { Container } from "postcss";
 const TableBoxRow = ({
   resourceIndex,
   dayIndex,
@@ -13,6 +14,7 @@ const TableBoxRow = ({
   const resizable = document.getElementById("resizable");
   const leftHandle = document.querySelector(".left-handle");
   const rightHandle = document.querySelector(".right-handle");
+  const content = document.querySelector(".content");
   let startX, initialWidth, initialLeft;
 
   const startResize = (e, handle) => {
@@ -38,7 +40,7 @@ const TableBoxRow = ({
     const containerRect = resizable.parentElement.getBoundingClientRect();
 
     if (
-      newWidth > 50 &&
+      newWidth > 5 &&
       newLeft > containerRect.left &&
       newLeft + newWidth < containerRect.right
     ) {
@@ -54,7 +56,7 @@ const TableBoxRow = ({
     const containerRect = resizable.parentElement.getBoundingClientRect();
     const currentLeft = resizable.getBoundingClientRect().left;
 
-    if (newWidth > 50 && currentLeft + newWidth < containerRect.right) {
+    if (newWidth > 5 && currentLeft + newWidth < containerRect.right) {
       resizable.style.width = `${newWidth}px`;
     }
   };
