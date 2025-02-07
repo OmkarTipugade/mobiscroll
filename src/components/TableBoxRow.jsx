@@ -138,7 +138,7 @@ const TableBoxRow = ({
       <td
         id={id}
         key={dayIndex}
-        className="border w-[72px] h-[62px] border-gray-300 bg-white relative"
+        className={`${(dayIndex===0)?'border-s-0 border border-gray-300': 'border border-gray-300'} w-[72px] h-[62px] bg-white relative`}
         onDoubleClick={() => handleDoubleClick(resourceIndex, dayIndex)}
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => handleDrop(e, resourceIndex, dayIndex)}

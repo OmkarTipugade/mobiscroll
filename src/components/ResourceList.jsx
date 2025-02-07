@@ -16,7 +16,11 @@ const ResourceList = ({ resources, setResources }) => {
       {resources.map((resource, index) => (
         <div
           key={index}
-          className="border text-sm font-semibold p-1.5 h-[62px] w-48 border-gray-300"
+          className={`text-sm font-semibold p-1.5 h-[62px] w-48 ${
+            index % 2 == 1 || index == resources.length - 1
+              ? "border border-gray-300"
+              : "border-e border-gray-300"
+          }`}
         >
           {resource}
         </div>
