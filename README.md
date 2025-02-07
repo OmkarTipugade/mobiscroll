@@ -33,7 +33,6 @@ Currently, two official plugins are available:
 - **Resource List**: Allows adding and displaying a list of resources.
 - **Schedule Table**: Displays a schedule table with events for each resource and day.
 - **Event Management**: Supports adding, dragging, and resizing events within the schedule table.
-- **Local Storage**: Persists events in local storage to maintain state across page reloads.
 
 ## Usage Guidelines
 
