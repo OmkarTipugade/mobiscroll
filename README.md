@@ -30,7 +30,7 @@ Currently, two official plugins are available:
 ## Implemented Features
 
 - **Calendar Component**: Displays a calendar with navigation for previous and next months.
-  ![Calendar](https://drive.google.com/file/d/1E4PzQyuIqwTHkIbZOjuV3EHG_RzdB10Z/view?usp=sharing)
+  ![Calendar]([https://drive.google.com/file/d/1E4PzQyuIqwTHkIbZOjuV3EHG_RzdB10Z/view?usp=sharing](https://drive.google.com/file/d/1E4PzQyuIqwTHkIbZOjuV3EHG_RzdB10Z/view))
 - **Resource List**: Allows adding and displaying a list of resources.
 - **Schedule Table**: Displays a schedule table with events for each resource and day.
 - **Event Management**: Supports adding, dragging, and resizing events within the schedule table.
