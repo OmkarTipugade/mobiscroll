@@ -33,6 +33,7 @@ Currently, two official plugins are available:
 - **Resource List**: Allows adding and displaying a list of resources.
 - **Schedule Table**: Displays a schedule table with events for each resource and day.
 - **Event Management**: Supports adding, dragging, and resizing events within the schedule table.
+- **Event Deleted! Pop-Up Message**: When an event is deleted, a pop-up message will appear stating: "Event Deleted!".
 
 ## Usage Guidelines
 
