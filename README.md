@@ -9,24 +9,22 @@ Currently, two official plugins are available:
 
 ## Instructions for Running the Project
 
-1. **Install Dependencies**: Run the following command to install the required dependencies:
+1. **Fork the Repository**: Click the "Fork" button at the top right of the repository page on GitHub.
+
+2. **Clone the Repository**: Run the following command to clone the forked repository to your local machine:
+    ```sh
+    git clone https://github.com/your-username/mobiscroll.git
+    cd mobiscroll
+    ```
+
+3. **Install Dependencies**: Run the following command to install the required dependencies:
     ```sh
     npm install
     ```
 
-2. **Start Development Server**: Run the following command to start the development server:
+4. **Start Development Server**: Run the following command to start the development server:
     ```sh
     npm run dev
-    ```
-
-3. **Build for Production**: Run the following command to build the project for production:
-    ```sh
-    npm run build
-    ```
-
-4. **Preview Production Build**: Run the following command to preview the production build:
-    ```sh
-    npm run preview
     ```
 
 ## Implemented Features
